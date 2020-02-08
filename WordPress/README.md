@@ -4,22 +4,37 @@ Use this Docker development environment template to spin up docker images to hos
 
 * Wordpress - Latest
 * MySQL - 5.7
+* PhpMyAdmin - Latest
 
-NOTE: I Recommned updating the environment section of each service for production usage.
+NOTE: I highly recommned updating the environment section of each service for development or production usage.
 
 ## Starting WordPress Environment
-Read about Docker compose to explain what this does
+Spin up your WordPress environment by running the following command
 ```
-$ docker-compose up
+$ docker-compose up -d
 ```
 
-Next, open your browser of choice and navigate to localhost:8080. 8080 is the port defined in the docker-compose file for the WordPress service.
+Open your browser of choice and navigate to localhost:8080 and follow the wizard. 8080 is the port defined in the docker-compose file for the WordPress service.Congrats, your WordPress site is all setup.
+
+## Using PhpMyAdmin
+
+To access your PhpMyAdmin navigate to localhost:8082. Enter your username: `root` and password `dbpassword` to gain access. Boom, you're in.
+
+## Stopping WordPress Environment
+```
+$ docker-compose down
+```
+
+## Cleaning up WordPress Environment
+
+This will wipe all stored data of your Wordpress instance.
+
+```
+$ docker-compose rm -s
+```
 
 NOTE: Docker saves all configures from when it was first initiailized. If you would like to start anew use the following command
 
-```
-$ docker-compose rm
-```
 
 ## Load existing WordPress Application
 
