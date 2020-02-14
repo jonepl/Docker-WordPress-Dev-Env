@@ -4,11 +4,11 @@ services:
   mysql:
     image: mysql:5.7
     # connects local db to my sql container
-    # volumes:
-    #   - ./db:/docker-entrypoint-initdb.d
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: dbpassword
+      MYSQL_ROOT_PASSWORD: wordpress
       MYSQL_DATABASE: wordpress
       MYSQL_user: wordpress
       MYSQL_PASSWORD: wordpress
@@ -24,7 +24,7 @@ services:
     restart: always
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: dbpassword
+      MYSQL_ROOT_PASSWORD: wordpress
     networks:
       - wpsite
 
@@ -32,8 +32,8 @@ services:
     image: wordpress
     depends_on:
       - mysql
-    # volumes:
-    #   - ./src:/var/www/html
+    volumes:
+      - ./src:/var/www/html
     links:
       - mysql:mysql
     ports:
