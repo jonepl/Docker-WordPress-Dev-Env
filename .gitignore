@@ -1,3 +1,5 @@
 # Ingore volume folders
 src/
 db/
+
+ServerBackups/
