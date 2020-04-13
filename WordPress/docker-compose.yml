@@ -4,21 +4,22 @@ services:
   mysql:
     image: mysql:5.7
     # connects local db to my sql container
+    container_name: mysql
     volumes:
-      #- ./db:/docker-entrypoint-initdb.d
-      - ./db/1-wp-db.sql:/docker-entrypoint-initdb.d/1-wp-db.sql
-    #   - ./db/2-migrate.sql:/docker-entrypoint-initdb.d/2-migrate.sql
+      - ./db:/docker-entrypoint-initdb.d
+      - ./dev/:/dev
     restart: always
     environment:
-      MYSQL_DATABASE: purnellj_WPMRL
-      MYSQL_USER: purnellj_WPMRL
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: mysqldb
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpassword
       MYSQL_ROOT_PASSWORD: password
     networks:
       - wpsite
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
     depends_on:
       - mysql
     ports:
@@ -26,28 +27,29 @@ services:
     restart: always
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: mysqlpassword
     networks:
       - wpsite
 
   wordpress:
     image: wordpress
+    container_name: wordpress
     depends_on:
       - mysql
     volumes:
       - ./src:/var/www/html
-      # - ./src/wp-config.php:/var/www/html/wp-config.php
+      - ./dev/:/dev
     links:
       - mysql:mysql
     ports:
       - 8080:80
     restart: always
     environment:
-      WORDPRESS_DB_NAME: purnellj_WPMRL
-      WORDPRESS_DB_USER: purnellj_WPMRL
-      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: mysqldb
+      WORDPRESS_DB_USER: mysqluser
+      WORDPRESS_DB_PASSWORD: mysqlpassword
       WORDPRESS_DB_HOST: mysql
-      WORDPRESS_TABLE_PREFIX: C5N_
+      WORDPRESS_TABLE_PREFIX: ZeF_
     networks:
       - wpsite
 networks:

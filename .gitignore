@@ -3,3 +3,11 @@ src/
 db/
 
 ServerBackups/
+creds.txt
+
+Wordpress/dev/Remote/Init-WP-Repo.sh
+Wordpress/dev/Remote/post-receive
+WordPress/dev/Backups/
+
+local.config
+
