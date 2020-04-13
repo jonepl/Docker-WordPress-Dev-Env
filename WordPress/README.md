@@ -44,7 +44,7 @@ NOTE: Docker saves all configures from when it was first initiailized. If you wo
 In order to start the WordPress migration, follow the following steps:
 
 1. Enter your websites name and site url into the local.config. This will be used with the `migration.sh` script
-2. Check out WordPress Development [ README ](dev/WPDEV.md) before running the `migration.sh` script.
+2. Check out WordPress Development [ README ](dev/README.md) before running the `migration.sh` script.
 
 
 To start the migration of all source and database code from the remote server you must first run the `migration.sh` script. 
