@@ -7,7 +7,7 @@ services:
     container_name: mysql
     volumes:
       - ./db:/docker-entrypoint-initdb.d
-      - ./dev/:/dev
+      - ./dev:/wp-dev
     restart: always
     environment:
       MYSQL_DATABASE: mysqldb
@@ -38,7 +38,7 @@ services:
       - mysql
     volumes:
       - ./src:/var/www/html
-      - ./dev/:/dev
+      - ./dev:/wp-dev
     links:
       - mysql:mysql
     ports:

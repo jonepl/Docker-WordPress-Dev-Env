@@ -5,10 +5,10 @@ if [ ! -f "../src/wp-config.php" ]; then
     exit 1
 fi
 
-DBNAME=`cat Local/local.config | grep DBNAME | cut -d \= -f 2`
-DBUSER=`cat Local/local.config | grep DBUSER | cut -d \' -f 2`
-DBPASS=`cat Local/local.config | grep DBPASS | cut -d \' -f 2`
-PREFIX=`cat Local/local.config | grep PREFIX | cut -d \' -f 2`
+DBNAME=`cat Scripts/Config/local.config | grep DBNAME | cut -d \= -f 2`
+DBUSER=`cat Scripts/Config/local.config | grep DBUSER | cut -d \' -f 2`
+DBPASS=`cat Scripts/Config/local.config | grep DBPASS | cut -d \' -f 2`
+PREFIX=`cat Scripts/Config/local.config | grep PREFIX | cut -d \' -f 2`
 
 WPDBNAME=`cat ../src/wp-config.php | grep DB_NAME | cut -d \' -f 4`
 WPDBUSER=`cat ../src/wp-config.php | grep DB_USER | cut -d \' -f 4`
@@ -23,8 +23,8 @@ fi
 
 if [ -z $DBNAME ]; then
     echo "Appending Database name to local.config"
-    echo "" >> ./Local/local.config
-    echo "DBNAME=${WPDBNAME}" >> ./Local/local.config
+    echo "" >> ./Scripts/Config/local.config
+    echo "DBNAME=${WPDBNAME}" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
     echo "Updating Database name in local.config"
@@ -32,7 +32,7 @@ fi
 
 if [ -z $DBUSER ]; then
     echo "Appending Database user to local.config"
-    echo "DBUSER=${WPDBUSER}" >> ./Local/local.config
+    echo "DBUSER=${WPDBUSER}" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
     echo "Updating Database user in local.config"
@@ -40,7 +40,7 @@ fi
 
 if [ -z $PREFIX ]; then
     echo "Appending Database prefix to local.config"
-    echo "PREFIX=${WPPREFIX}" >> ./Local/local.config
+    echo "PREFIX=${WPPREFIX}" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
     echo "Updating Database prefix in local.config"
@@ -48,7 +48,7 @@ fi
 
 if [ -z $DBPASS ]; then
     echo "Appending Database password to local.config"
-    echo "DBPASS=$WPDBPASS" >> ./Local/local.config
+    echo "DBPASS=$WPDBPASS" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
     echo "Updating Database password in local.config"

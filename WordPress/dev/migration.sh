@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SITENAME=`cat Local/local.config | grep SITENAME | cut -d \= -f 2`
-WEBSITEURL=`cat Local/local.config | grep WEBSITEURL | cut -d \= -f 2`
-SSHINFO=`cat Local/local.config | grep SSHINFO | cut -d \= -f 2`
+SITENAME=`cat Scripts/Config/local.config | grep SITENAME | cut -d \= -f 2`
+WEBSITEURL=`cat Scripts/Config/local.config | grep WEBSITEURL | cut -d \= -f 2`
+SSHINFO=`cat Scripts/Local/local.config | grep SSHINFO | cut -d \= -f 2`
 
 if [ -z $SITENAME ]; then
     echo "Please provide a site name within local.config"
@@ -14,26 +14,31 @@ if [ -z $WEBSITEURL ]; then
     exit 1
 fi
 
+if [ -z $WEBSITEURL ]; then
+    echo "Please provide the <username>:<host> values within local.config to access your remote server."
+    exit 1
+fi
+
 import_wordpress () {
     echo "Importing Wordpress site from Server..."
 
     # Download data from Server. Drop SQL in ./db directory and Source code in ./src directory
-    sh Local/import-wordpress.sh ${1} ${2}
+    sh Scripts/Local/import-wordpress.sh ${1} ${2}
     if [ $? != "0" ]; then
         echo "Unable to import wordpress"
         exit 1
     fi
 
     # Append WP prefix to config file
-    sh Local/update-config.sh
+    sh Scripts/Local/update-config.sh
     if [ $? != "0" ]; then
         echo "Unable to update config file"
         exit 1
     fi
 
     # Update sql migration dev
-    WPPREFIX=`cat Local/local.config | grep PREFIX | cut -d \= -f 2`
-    SITEURL=`cat Local/local.config | grep WEBSITEURL | cut -d \= -f 2`
+    WPPREFIX=`cat Scripts/Config/local.config | grep PREFIX | cut -d \= -f 2`
+    SITEURL=`cat Scripts/Config/local.config | grep WEBSITEURL | cut -d \= -f 2`
 
     # # TODO: Error handling
     sed -i '' "s/UPDATE.*_options/UPDATE ${WPPREFIX}options/" ../db/2-migrate-to-local.sql
@@ -44,11 +49,16 @@ import_wordpress () {
 
 package_wordpress () {
     echo "Packaging Wordpress site for Server"
-    sh Local/package-wordpress.sh
+    sh Scripts/Local/package-wordpress.sh
     if [ $? != "0" ]; then
         echo "Unable to package wordpress site"
         exit 1
     fi
+}
+
+update_config(){
+    echo "Updating local.config from src folder"
+    sh Scripts/Local/update-config.sh
 }
 
 usage () {
@@ -83,6 +93,12 @@ do
     elif [ "$arg" == "--package" ] || [ "$arg" == "-p" ]
     then
         package_wordpress
+        exit 0
+    elif [ "$arg" == "--update" ] || [ "$arg" == "-u" ]
+    then
+        #update_config
+        echo "Not yet Implemented"
+        update_config
         exit 0
     elif [ "$arg" == "--help" ] || [ "$arg" == "-h" ]
     then

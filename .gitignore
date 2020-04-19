@@ -1,13 +1,14 @@
-# Ingore volume folders
+# Ingore content in shared docker volume folders
 src/
 db/
 
-ServerBackups/
-creds.txt
+# Ignore 
+Wordpress/dev/Scripts/Remote/Init-WP-Repo.sh
+Wordpress/dev/Scripts/Remote/post-receive
 
-Wordpress/dev/Remote/Init-WP-Repo.sh
-Wordpress/dev/Remote/post-receive
+# Ignore remote and local backups
 WordPress/dev/Backups/
 
+# Ignore sensitive configuration information
 local.config
 
