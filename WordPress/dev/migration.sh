@@ -2,7 +2,7 @@
 
 SITENAME=`cat Scripts/Config/local.config | grep SITENAME | cut -d \= -f 2`
 WEBSITEURL=`cat Scripts/Config/local.config | grep WEBSITEURL | cut -d \= -f 2`
-SSHINFO=`cat Scripts/Local/local.config | grep SSHINFO | cut -d \= -f 2`
+SSHINFO=`cat Scripts/Config/local.config | grep SSHINFO | cut -d \= -f 2`
 
 if [ -z $SITENAME ]; then
     echo "Please provide a site name within local.config"
@@ -61,6 +61,11 @@ update_config(){
     sh Scripts/Local/update-config.sh
 }
 
+new_project(){
+    echo "Not yet Implemented..."
+    # sh Scripts/Local/new-wp-project.sh
+}
+
 usage () {
     cat << EOF
 usage: $0 options
@@ -96,9 +101,11 @@ do
         exit 0
     elif [ "$arg" == "--update" ] || [ "$arg" == "-u" ]
     then
-        #update_config
-        echo "Not yet Implemented"
         update_config
+        exit 0
+    elif [ "$arg" == "--new" ] || [ "$arg" == "-n" ]
+    then
+        new_project
         exit 0
     elif [ "$arg" == "--help" ] || [ "$arg" == "-h" ]
     then

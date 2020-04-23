@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ $1 == "-c" ]; then
-    SITENAME=`cat local.config | grep SITENAME | cut -d \= -f 2`
-    SSHINFO=`cat local.config | grep SSHINFO | cut -d \= -f 2`
+    SITENAME=`cat Scripts/Config/local.config | grep SITENAME | cut -d \= -f 2`
+    SSHINFO=`cat Scripts/Config/ocal.config | grep SSHINFO | cut -d \= -f 2`
 elif [ ! -z $1 ] & [ ! -z $2 ]; then
     SITENAME=$1
     SSHINFO=$2
@@ -12,7 +12,7 @@ else
 fi
 
 # Backup Src and DB on Server
-ssh -p 22 ${SSHINFO} "sh ~/var/dev/Migration/server-wp-backup.sh ${SITENAME}"
+ssh -p 22 ${SSHINFO} "sh ~/var/dev/${SITENAME}/server-wp-backup.sh ${SITENAME}"
 if [ $? != "0" ]; then
     echo "Unable to backup wordpress on server"
     exit 1
