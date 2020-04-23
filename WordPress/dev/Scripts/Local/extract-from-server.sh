@@ -2,7 +2,7 @@
 
 if [ $1 == "-c" ]; then
     SITENAME=`cat Scripts/Config/local.config | grep SITENAME | cut -d \= -f 2`
-    SSHINFO=`cat Scripts/Config/ocal.config | grep SSHINFO | cut -d \= -f 2`
+    SSHINFO=`cat Scripts/Config/local.config | grep SSHINFO | cut -d \= -f 2`
 elif [ ! -z $1 ] & [ ! -z $2 ]; then
     SITENAME=$1
     SSHINFO=$2
@@ -12,12 +12,14 @@ else
 fi
 
 # Backup Src and DB on Server
+echo "Executing backup server script on remote server"
 ssh -p 22 ${SSHINFO} "sh ~/var/dev/${SITENAME}/server-wp-backup.sh ${SITENAME}"
 if [ $? != "0" ]; then
     echo "Unable to backup wordpress on server"
     exit 1
 fi
 
+echo "Cleaning up existing backups from Backups/Remote/${SITENAME}"
 if [ ! -d "Backups/Remote/${SITENAME}/" ]; then
     mkdir -p Backups/Remote/${SITENAME}
 else 
@@ -38,5 +40,10 @@ if [ -z $srcBackup ]; then
     exit 1
 fi
 
+echo "Copying backup sql script from remote server"
 scp ${SSHINFO}:backups/${SITENAME}/${sqlBackup} Backups/Remote/${SITENAME}/
+
+echo "Copying backup src zip from remote server"
 scp ${SSHINFO}:backups/${SITENAME}/${srcBackup} Backups/Remote/${SITENAME}/
+
+exit 0

@@ -48,12 +48,12 @@ if [ -z $DBPATH ] | [ -z $SRCPATH ]; then
 fi
 
 # Copy Backed up data to SRC and DB folder for Docker volumes
-echo "Moving SQL files to db folder"
+echo "Moving extacted SQL files to the shared db folder"
 cp ${DBPATH} ../db
 mv ../db/${DB} ../db/1-${DB}
 cp Scripts/Sql/2-migrate-to-local.sql ../db
 
-echo "Moving WordPress files to src folder"
+echo "Moving extracted WordPress files to the shared src folder"
 tar -xzf ${SRCPATH} -C ../src/
 if [ $? != "0" ]; then
     echo "Unable to untar src code files."
