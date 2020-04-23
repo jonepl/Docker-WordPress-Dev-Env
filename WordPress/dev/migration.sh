@@ -75,7 +75,8 @@ This script is the entrypoint for importing and packaging your WordPress site re
 OPTIONS:
     -h      Show help message
     -i      Import WordPress from server
-    -r      Package WordPress used by docker Container
+    -p      Package WordPress used by docker Container
+    -u      Update local WordPress configuration information
 EOF
 }
 
