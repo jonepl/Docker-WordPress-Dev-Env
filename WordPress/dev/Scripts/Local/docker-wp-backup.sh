@@ -23,7 +23,7 @@ fi
 
 # Create Backup Directory Path
 timeStamp=$(date +%Y-%m-%d_%H-%M)
-backupDir=/wp-dev/Backups/Local/${SITENAME}
+backupDir=/wp-dev/Backups/Local/
 
 # Create Backup Directory
 if [ ! -d "${backupDir}" ]; then
