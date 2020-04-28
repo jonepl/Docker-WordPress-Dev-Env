@@ -63,6 +63,8 @@ get_sitename(){
     sites=()
     INDEX=0
 
+    echo "$0: Choose an option from you available sites:"
+
     for i in `find Scripts/Config/* -type d`
     do
         echo ${INDEX}. $(basename $i)
@@ -70,7 +72,7 @@ get_sitename(){
         let INDEX=${INDEX}+1
     done
 
-    echo "$0: Which site would you like to use?"
+    
     read choice;
 
     re='^[0-9]+$'
@@ -113,9 +115,10 @@ This script is the entrypoint for importing and packaging your WordPress site re
 
 OPTIONS:
     -h      Show help message
+    -n      Start a new WordPress project
     -i      Import WordPress from server
     -p      Package WordPress used by docker Container
-    -u      Update local WordPress configuration information
+    -u      Upload server scripts
 EOF
 }
 
@@ -144,8 +147,7 @@ do
     elif [ "$arg" == "--upload" ] || [ "$arg" == "-u" ]
     then
         get_sitename
-        upload_server_scripts
-        #update_config ${SITENAME}
+        upload_server_scripts ${SITENAME}
         
         exit 0
     elif [ "$arg" == "--validate" ] || [ "$arg" == "-v" ]
