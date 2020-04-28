@@ -30,8 +30,8 @@ fi
 
 if [ -z $DBNAME ]; then
     echo "$0: Appending Database name to local.config"
-    echo "" >> ./Scripts/Config/local.config
-    echo "$0: DBNAME=${WPDBNAME}" >> ./Scripts/Config/local.config
+    echo "" >> ./Scripts/Config/${SITENAME}/local.config
+    echo "DBNAME=${WPDBNAME}" >> ./Scripts/Config/${SITENAME}/local.config
 else
     # TODO: complete logic
     echo "$0: Updating Database name in local.config"
@@ -39,7 +39,7 @@ fi
 
 if [ -z $DBUSER ]; then
     echo "$0: Appending Database user to local.config"
-    echo "$0: DBUSER=${WPDBUSER}" >> ./Scripts/Config/local.config
+    echo "DBUSER=${WPDBUSER}" >> ./Scripts/Config/${SITENAME}/local.config
 else
     # TODO: complete logic
     echo "$0: Updating Database user in local.config"
@@ -47,7 +47,7 @@ fi
 
 if [ -z $PREFIX ]; then
     echo "$0: Appending Database prefix to local.config"
-    echo "$0: PREFIX=${WPPREFIX}" >> ./Scripts/Config/local.config
+    echo "PREFIX=${WPPREFIX}" >> ./Scripts/Config/${SITENAME}/local.config
 else
     # TODO: complete logic
     echo "$0: Updating Database prefix in local.config"
@@ -55,7 +55,7 @@ fi
 
 if [ -z $DBPASS ]; then
     echo "$0: Appending Database password to local.config"
-    echo "$0: DBPASS=$WPDBPASS" >> ./Scripts/Config/local.config
+    echo "DBPASS=$WPDBPASS" >> ./Scripts/Config/${SITENAME}/local.config
 else
     # TODO: complete logic
     echo "$0: Updating Database password in local.config"

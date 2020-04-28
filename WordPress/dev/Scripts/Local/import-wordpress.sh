@@ -38,9 +38,9 @@ if [ ! -z "$(ls -A ../src )" ]; then
     rm -rf ../src/.*
 fi
 
-DBPATH=$(find Backups/${SITENAME}/Remote/*.sql)
+DBPATH=$(ls -t Backups/${SITENAME}/Remote/*.sql | head -1)
 DB=$(basename ${DBPATH})
-SRCPATH=$(find Backups/${SITENAME}/Remote/*.gz)
+SRCPATH=$(ls -t Backups/${SITENAME}/Remote/*.gz | head -1)
 
 if [ -z $DBPATH ] || [ -z $SRCPATH ]; then
     echo "$0: Unable to find backup files"

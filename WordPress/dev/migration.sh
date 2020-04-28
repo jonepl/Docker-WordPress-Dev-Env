@@ -128,13 +128,6 @@ if [ $# -le 0 ]; then
     exit 1
 fi
 
-
-
-echo $SITENAME
-echo $WEBSITEURL
-echo $SSHINFO
-
-
 for arg in "$@"
 do
 
