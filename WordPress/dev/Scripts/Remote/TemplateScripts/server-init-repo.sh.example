@@ -1,0 +1,70 @@
+#!/bin/bash
+
+SITENAME=1
+GITROOTDIR=2
+DEVROOTDIR=3
+
+gitPath=${GITROOTDIR}${SITENAME}/${SITENAME}.git/
+tempWebPath=${GITROOTDIR}www/
+devPath=${DEVROOTDIR}${SITENAME}
+
+function validateDirs() {
+
+    if [ ! -d "$gitPath" ]; then
+        echo "Creating ${gitPath} directories for git folder..."
+        mkdir -p $gitPath
+    fi
+
+    if [ ! -d "$tempWebPath" ]; then
+        echo "Creating '${tempWebPath}' directories for temp folder..."
+        mkdir -p $tempWebPath
+    fi
+
+    if [ ! -d "$devPath" ]; then
+        echo "Creating '${devPath}' directories for temp folder..."
+        mkdir -p $devPath
+    fi
+}
+
+# Cleans Git and www folders
+function cleanRemoteDirs() {
+    
+    if [ ! -d $gitPath ]; then
+        echo "$gitPath DOES NOT EXIST. Execute this script without the clean flag."
+        exit 0
+    fi
+
+    if [ "$(ls -A $gitPath)" ]; then
+        echo "Cleaning directory: $gitPath*"
+        rm -rf $gitPath*
+    fi
+    if [ "$(ls -A $tempWebPath)" ]; then
+        echo "Cleaning directory: $tempWebPath*"
+        rm $tempWebPath.gitignore
+        rm -rf $tempWebPath*
+    fi
+
+    echo "Cleaned all directories"
+}
+
+function createRemoteDirs() {
+
+    if [ -d "$gitPath" ]; then
+        cd $gitPath
+        git init --bare $gitPath
+        cp $devPath/post-receive $gitPath/hooks/post-receive
+        chmod +x $gitPath/hooks/post-receive
+    fi
+}
+
+for arg in "$@"
+do
+    if [ "$arg" == "--clean" ] || [ "$arg" == "-c" ]
+    then
+        cleanRemoteDirs
+        exit 0
+    fi
+done
+
+validateDirs
+createRemoteDirs

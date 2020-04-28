@@ -12,3 +12,5 @@ WordPress/dev/Backups/
 # Ignore sensitive configuration information
 local.config
 
+Wordpress/dev/Scripts/Remote/*
+!Wordpress/dev/Scripts/Remote/TemplateScripts

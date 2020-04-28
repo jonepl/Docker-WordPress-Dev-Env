@@ -1,0 +1,62 @@
+#!/bin/bash
+
+SITENAME=1
+SITEURL=2
+WEBROOTDIR=3
+GITROOTDIR=2
+
+webDir=${WEBROOTDIR}${SITENAME}/
+tempWebPath=${GITROOTDIR}www/
+
+# Pulls Datbase Information
+WPDBNAME=`cat ${webDir}wp-config.php | grep DB_NAME | cut -d \' -f 4`
+WPDBUSER=`cat ${webDir}wp-config.php | grep DB_USER | cut -d \' -f 4`
+WPDBPASS=`cat ${webDir}wp-config.php | grep DB_PASSWORD | cut -d \' -f 4`
+WPPREFIX=`cat ${webDir}wp-config.php | grep table_prefix | cut -d \' -f 2`
+WPDBHOST=localhost
+
+if [ -z ${WPDBUSER} ] | [ -z ${WPDBNAME} ] | [ -z ${WPDBPASS} ] | [ -z ${WPPREFIX} ]; then
+    echo "Unable to retrieve wordpress information"
+    exit 1
+fi
+
+# Get latest scripts for importing
+wpMigration=`find ${tempWebPath}*.sql -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
+wpDbBackup=`find ${tempWebPath}wp*.sql -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
+wpSrcBackup=`find ${tempWebPath}*.gz -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
+
+if [ -z ${wpMigration} ] | [ -z ${wpMigration} ] | [ -z ${wpMigration} ]; then
+    echo "Unable to retrieve backup src, db or migration files"
+    exit 1
+fi
+
+# Update db code migrartion scripts
+sed -i  "s/UPDATE.*_options/UPDATE ${WPPREFIX}options/" ${wpMigration}
+sed -i  "s/UPDATE.*_posts/UPDATE ${WPPREFIX}posts/" ${wpMigration}
+sed -i  "s#'https://siteurl.com'#'${SITEURL}'#" ${wpMigration}
+
+# Remove previously saved backup
+if [ -d ${webDir%/*}.bak ]; then
+    echo "Cleaning out back up directory"
+    rm -rf ${webDir%/*}.bak
+fi
+
+# Backup current wp site
+mv ${webDir%/*} ${webDir%/*}.bak
+
+# recreate origin wp folder
+mkdir -p ${webDir}
+
+# untar backup files in to newly create wp folder
+tar -xzf ${wpSrcBackup} -C ${webDir}
+
+# Update src code for wp-config from Docker value
+sed -i "s/'DB_NAME', '.*'/'DB_NAME', '${WPDBNAME}'/" ${webDir}wp-config.php
+sed -i "s/'DB_USER', '.*'/'DB_USER', '${WPDBUSER}'/" ${webDir}wp-config.php
+sed -i "s/'DB_PASSWORD', '.*'/'DB_PASSWORD', '${WPDBPASS}'/" ${webDir}wp-config.php
+sed -i "s/'DB_HOST', '.*'/'DB_HOST', '${WPDBHOST}'/" ${webDir}wp-config.php
+
+# Upload Database Code
+mysql --user ${WPDBUSER} --password="${WPDBPASS}" ${WPDBNAME} < ${wpDbBackup}
+mysql --user ${WPDBUSER} --password="${WPDBPASS}" ${WPDBNAME} < ${wpMigration}
+

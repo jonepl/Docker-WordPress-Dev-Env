@@ -1,3 +1,7 @@
 SITENAME=supercool
 WEBSITEURL=https://supercoolsite.com
 SSHINFO=<user>@<host>
+GITROOTDIR=~/var/repos/
+DEVROOTDIR=~/var/dev/
+WEBROOTDIR=~/public_html/
+BACKUPROOTDIR=~/backups/

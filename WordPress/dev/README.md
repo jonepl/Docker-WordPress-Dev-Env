@@ -27,12 +27,13 @@ The Scripts directory contains all the scripts you will need to import and packa
 ```
 migration.sh
 |_ import-wordpress.sh          
-    |_ extract-from-server.sh
-    |   |_ server-wp-backup.sh
-    |_ update-config.sh
+  | |_ extract-from-server.sh
+  |    |_ server-wp-backup.sh
+  |_ update-config.sh
 |_ package-wordpress.sh
    |_ docker-wp-backup.sh
    |_ docker-db-backup.sh
+|_ upload-server-scripts.sh
 ```
 
 NOTES:

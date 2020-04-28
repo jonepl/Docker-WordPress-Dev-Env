@@ -1,0 +1,32 @@
+#!/bin/bash
+
+SITENAME=1
+WEBROOTDIR=2
+
+# Create Backup Directory
+timeStamp=$(date +%Y-%m-%d_%H-%M)
+currBackupDir=~/backups/${SITENAME}/
+webDir=${WEBROOTDIR}${SITENAME}/
+
+# Pulls Datbase Information
+WPDBNAME=`cat ${webDir}wp-config.php | grep DB_NAME | cut -d \' -f 4`
+WPDBUSER=`cat ${webDir}wp-config.php | grep DB_USER | cut -d \' -f 4`
+WPDBPASS=`cat ${webDir}wp-config.php | grep DB_PASSWORD | cut -d \' -f 4`
+WPPREFIX=`cat ${webDir}wp-config.php | grep table_prefix | cut -d \' -f 2`
+
+if [ -z ${WPDBNAME} ] | [ -z ${WPDBUSER} ] | [ -z ${WPDBPASS} ]; then
+    echo "Unable to extract Database Information";
+    exit 1
+fi
+
+# Create Parent Backups directory if not exists
+if [ ! -d "${currBackupDir}" ]; then
+    echo "Creating Backup directory..."
+    mkdir -p ${currBackupDir}
+fi
+
+# Package Source Code
+tar -C ${webDir} -cvzf ${currBackupDir}wp-src-${timeStamp}.gz .
+
+# Package Database Code
+mysqldump --user ${WPDBUSER} --password="${WPDBPASS}" ${WPDBNAME} > ${currBackupDir}wp-db-${timeStamp}.sql

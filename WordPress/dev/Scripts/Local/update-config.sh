@@ -5,10 +5,17 @@ if [ ! -f "../src/wp-config.php" ]; then
     exit 1
 fi
 
-DBNAME=`cat Scripts/Config/local.config | grep DBNAME | cut -d \= -f 2`
-DBUSER=`cat Scripts/Config/local.config | grep DBUSER | cut -d \' -f 2`
-DBPASS=`cat Scripts/Config/local.config | grep DBPASS | cut -d \' -f 2`
-PREFIX=`cat Scripts/Config/local.config | grep PREFIX | cut -d \' -f 2`
+SITENAME=$1
+
+if [ -z $SITENAME ]; then
+    echo "$0: Invalid Site name"
+    exit 1
+fi
+
+DBNAME=`cat Scripts/Config/${SITENAME}/local.config | grep DBNAME | cut -d \= -f 2`
+DBUSER=`cat Scripts/Config/${SITENAME}/local.config | grep DBUSER | cut -d \' -f 2`
+DBPASS=`cat Scripts/Config/${SITENAME}/local.config | grep DBPASS | cut -d \' -f 2`
+PREFIX=`cat Scripts/Config/${SITENAME}/local.config | grep PREFIX | cut -d \' -f 2`
 
 WPDBNAME=`cat ../src/wp-config.php | grep DB_NAME | cut -d \' -f 4`
 WPDBUSER=`cat ../src/wp-config.php | grep DB_USER | cut -d \' -f 4`
@@ -22,34 +29,34 @@ fi
 
 
 if [ -z $DBNAME ]; then
-    echo "Appending Database name to local.config"
+    echo "$0: Appending Database name to local.config"
     echo "" >> ./Scripts/Config/local.config
-    echo "DBNAME=${WPDBNAME}" >> ./Scripts/Config/local.config
+    echo "$0: DBNAME=${WPDBNAME}" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
-    echo "Updating Database name in local.config"
+    echo "$0: Updating Database name in local.config"
 fi
 
 if [ -z $DBUSER ]; then
-    echo "Appending Database user to local.config"
-    echo "DBUSER=${WPDBUSER}" >> ./Scripts/Config/local.config
+    echo "$0: Appending Database user to local.config"
+    echo "$0: DBUSER=${WPDBUSER}" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
-    echo "Updating Database user in local.config"
+    echo "$0: Updating Database user in local.config"
 fi
 
 if [ -z $PREFIX ]; then
-    echo "Appending Database prefix to local.config"
-    echo "PREFIX=${WPPREFIX}" >> ./Scripts/Config/local.config
+    echo "$0: Appending Database prefix to local.config"
+    echo "$0: PREFIX=${WPPREFIX}" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
-    echo "Updating Database prefix in local.config"
+    echo "$0: Updating Database prefix in local.config"
 fi
 
 if [ -z $DBPASS ]; then
-    echo "Appending Database password to local.config"
-    echo "DBPASS=$WPDBPASS" >> ./Scripts/Config/local.config
+    echo "$0: Appending Database password to local.config"
+    echo "$0: DBPASS=$WPDBPASS" >> ./Scripts/Config/local.config
 else
     # TODO: complete logic
-    echo "Updating Database password in local.config"
+    echo "$0: Updating Database password in local.config"
 fi
