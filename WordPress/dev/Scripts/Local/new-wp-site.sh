@@ -6,6 +6,7 @@ create_site_config(){
     echo "$0: Creating Config, Scripts and Backup directory"
     cat Scripts/Config/local.config.example > Scripts/Config/${SITENAME}/local.config
     sed -i '' "s#SITENAME=.*#SITENAME=$SITENAME#" Scripts/Config/${SITENAME}/local.config
+    sed -i '' "s#WEBSITEURL=.*#WEBSITEURL=$WEBSITEURL#" Scripts/Config/${SITENAME}/local.config
 }
 
 create_remote_scripts(){
@@ -22,8 +23,11 @@ create_site_backupDir(){
 if [ ! -e CONFIG ]; then
     echo "Enter your site name."
     read response;
-
     SITENAME=$response;
+
+    echo "Enter your website url."
+    read response;
+    WEBSITEURL=$response;
 
     if [ ! -d Scripts/Config/$SITENAME/ ]; then
         echo "$0: Generating ${SITENAME} folders and files..."

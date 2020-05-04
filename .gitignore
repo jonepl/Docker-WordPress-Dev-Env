@@ -14,3 +14,5 @@ local.config
 
 Wordpress/dev/Scripts/Remote/*
 !Wordpress/dev/Scripts/Remote/TemplateScripts
+
+Notes.txt

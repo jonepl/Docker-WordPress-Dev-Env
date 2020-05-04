@@ -1,42 +1,16 @@
-# WordPress Dev Environment
+# Docker Dev Environment for WordPress
 
-Use this Docker development environment template to spin up docker images to host a clean Wordpress application. The services used are as follows:
+Use this Docker development environment repo to spin up WordPress a environment for one of many remote server connections. Here are the Docker services used:
 
 * Wordpress - Latest
 * MySQL - 5.7
 * PhpMyAdmin - Latest
 
-NOTE: I highly recommned updating the environment section of each service for development or production usage.
+## Working with this Application
 
-## Starting WordPress Environment
+This application allows you to maintain multiple imported WordPress sites into individual docker containers. You can start a new site by running the `migration.sh` script. View more details within [ README ](dev/README.md)
 
-1. Create a `src` folder and `db` folder for you docker to mount to.
 
-2. Spin up your WordPress environment by running the following command
-```
-$ docker-compose up -d
-```
-
-3. Open your browser of choice and navigate to localhost:8080 and follow the wizard. 8080 is the port defined in the docker-compose file for the WordPress service.Congrats, your WordPress site is all setup.
-
-## Using PhpMyAdmin
-
-To access your PhpMyAdmin navigate to localhost:8082. Enter your username: `root` and password `dbpassword` to gain access. Boom, you're in.
-
-## Stopping WordPress Environment
-```
-$ docker-compose down
-```
-
-## Cleaning up WordPress Environment
-
-This will wipe all stored data of your Wordpress instance.
-
-```
-$ docker-compose rm -s
-```
-
-NOTE: Docker saves all configures from when it was first initiailized. If you would like to start anew use the following command
 
 
 ## Docker to WordPress Development

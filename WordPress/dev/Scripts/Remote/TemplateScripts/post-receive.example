@@ -1,18 +1,20 @@
 #!/bin/bash
 SITENAME=1
-GITROOTDIR=2
-WEBROOTDIR=3
-WEBSITEURL=4
+DEVROOTDIR=2
+GITROOTDIR=3
+WEBROOTDIR=4
+WEBSITEURL=5
 
 SITEURL=${WEBSITEURL}
 gitPath=${GITROOTDIR}${SITENAME}/${SITENAME}.git/   # Where your git folder lives
 webPath=${WEBROOTDIR}${SITENAME}/                   # Where your public hosted website lives
 tempWebPath=${GITROOTDIR}www/                       # Location where dev scripts go
+scriptPath=${DEVROOTDIR}/scripts/${SITENAME}/
 
 git --work-tree=$tempWebPath --git-dir=$gitPath checkout -f
 
 # Apply WordPress from git check-in
-sh server-wp-import.sh ${SITENAME} ${SITEURL}
+sh ${scriptPath}server-wp-import.sh ${SITENAME} ${SITEURL}
 if [ $? != "0" ]; then
     echo "Something went wrong while running server-wp-import.sh"
     exit 1

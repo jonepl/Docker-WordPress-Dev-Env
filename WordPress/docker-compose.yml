@@ -49,7 +49,7 @@ services:
       WORDPRESS_DB_USER: mysqluser
       WORDPRESS_DB_PASSWORD: mysqlpassword
       WORDPRESS_DB_HOST: mysql
-      WORDPRESS_TABLE_PREFIX: ZeF_
+      WORDPRESS_TABLE_PREFIX: l2b_
     networks:
       - wpsite
 networks:

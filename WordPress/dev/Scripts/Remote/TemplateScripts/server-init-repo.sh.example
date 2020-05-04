@@ -6,7 +6,7 @@ DEVROOTDIR=3
 
 gitPath=${GITROOTDIR}${SITENAME}/${SITENAME}.git/
 tempWebPath=${GITROOTDIR}www/
-devPath=${DEVROOTDIR}${SITENAME}
+devPath=${DEVROOTDIR}/scripts/${SITENAME}/
 
 function validateDirs() {
 

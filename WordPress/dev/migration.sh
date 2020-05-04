@@ -32,12 +32,17 @@ import_wordpress () {
     sed -i '' "s/UPDATE.*_options/UPDATE ${WPPREFIX}options/" ../db/2-migrate-to-local.sql
     sed -i '' "s/UPDATE.*_posts/UPDATE ${WPPREFIX}posts/" ../db/2-migrate-to-local.sql
     sed -i '' "s#'https://siteurl.com'#'${SITEURL}'#" ../db/2-migrate-to-local.sql
-    
+    sed -i '' "s#WORDPRESS_TABLE_PREFIX:.*#WORDPRESS_TABLE_PREFIX: ${WPPREFIX}#" ../docker-compose.yml
 }
 
 package_wordpress () {
+
+    WPDBNAME=`cat Scripts/Config/${SITENAME}/local.config | grep DBNAME | cut -d \= -f 2`
+    WPDBPASS=`cat Scripts/Config/${SITENAME}/local.config | grep DBPASS | cut -d \= -f 2`
+    
     echo "$0: Packaging Wordpress site for Server"
-    sh Scripts/Local/package-wordpress.sh $SITENAME
+    sh Scripts/Local/package-wordpress.sh $SITENAME $WPDBNAME $WPDBPASS
+
     if [ $? != "0" ]; then
         echo "$0: Unable to package wordpress site"
         exit 1

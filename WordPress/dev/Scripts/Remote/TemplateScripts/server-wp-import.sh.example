@@ -21,7 +21,7 @@ if [ -z ${WPDBUSER} ] | [ -z ${WPDBNAME} ] | [ -z ${WPDBPASS} ] | [ -z ${WPPREFI
 fi
 
 # Get latest scripts for importing
-wpMigration=`find ${tempWebPath}*.sql -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
+wpMigration=`find ${tempWebPath}2*.sql -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
 wpDbBackup=`find ${tempWebPath}wp*.sql -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
 wpSrcBackup=`find ${tempWebPath}*.gz -printf '%T+ %p\n' | sort -r | head -1 | cut -d ' ' -f 2`
 
@@ -53,7 +53,7 @@ tar -xzf ${wpSrcBackup} -C ${webDir}
 # Update src code for wp-config from Docker value
 sed -i "s/'DB_NAME', '.*'/'DB_NAME', '${WPDBNAME}'/" ${webDir}wp-config.php
 sed -i "s/'DB_USER', '.*'/'DB_USER', '${WPDBUSER}'/" ${webDir}wp-config.php
-sed -i "s/'DB_PASSWORD', '.*'/'DB_PASSWORD', '${WPDBPASS}'/" ${webDir}wp-config.php
+sed -i "s/'DB_PASSWORD', '.*'/'DB_PASSWORD', '${WPDBPASS/&/\&}'/" ${webDir}wp-config.php
 sed -i "s/'DB_HOST', '.*'/'DB_HOST', '${WPDBHOST}'/" ${webDir}wp-config.php
 
 # Upload Database Code

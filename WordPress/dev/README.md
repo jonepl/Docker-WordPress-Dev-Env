@@ -2,25 +2,51 @@
 
 ## Usage
 
-The migration scripts use a local.config file to save and pull sensitive WordPress information. Be sure to keep this in you .gitignore. To execute the below migration script help text use:
+
+The `migration.sh` scripts use a local.config file for each website. This file holds site credentials and app information which the development scripts use to integrated between Remote and Local environments. Be sure to keep this in you `.gitignore`. To see helpful application usage run command:
 
 ```
-$ sh migration.sh 
+$ sh migration.sh -h
 ```
-
 ## Typical Workflow
 
-1. Update the values in [ local.config.example ](Scripts/Config/local.config.example) and rename the file local.config
-2. Run `sh migration.sh -i`. This will import your wordpress from your remote server to your local machine.
-3. Run docker-compose up -d
-4. To access your WordPress site, use the same login as was used to access the remote server
-5. Development your wordpress site
-6. Run `sh migration.sh -p`. This will package your WordPress src and db changes into a gzip and sql db backup file.
-7. Use the scripts generated in dev/Backups/Local/ to apply to your server using your preferred application method. (GIT, BashScript, Manual, etc)
+1. Create/Retrieve WordPress sitename, site url and SSH information. 
+2. Start a new site project `sh migration.sh -n`. Once created update, Update the local.config file with Scripts/Config/${SITENAME}/
+3. Upload remote scripts to remote server. `sh migration.sh -u`
+4. Import remote website into project. `sh migration.sh -i`
+5. Start `docker-compose up -d`
+6. Develop your wordpress site. Access site in your browser using localhost:8080 and PhpMyAdmin localhost:8082
+7. Package wordpress. `sh migration.sh -p`
+8. Apply to remote server using you method of choice (GIT, BashScript, Manual, etc).
+
+## Working with Docker 
+
+### Start Docker Wordpress container
+
+```
+$ docker-compose up -d
+```
+
+### Stop WordPress Environment
+```
+$ docker-compose down
+```
+
+### Clean up WordPress Environment
+
+This will wipe all stored data of your Wordpress instance.
+
+```
+$ docker-compose rm -s
+```
+
+## Using PhpMyAdmin
+
+To access your PhpMyAdmin navigate to localhost:8082. Enter your username: `root` and password `password` to gain access. Boom, you're in.
 
 ## Useful Info
 
-The Scripts directory contains all the scripts you will need to import and package your WordPress site for local development. There a multiple scripts that get call in order to retrieve the files from the remote server and package local src and db changes to be applied to the remote server.
+The Scripts/Local directory contains all the scripts you will need to import and package your WordPress site for local development. There a multiple scripts that get call in order to retrieve the files from the remote server and package local src and db changes to be applied to the remote server.
 
 ### Scripts Call Stack 
 

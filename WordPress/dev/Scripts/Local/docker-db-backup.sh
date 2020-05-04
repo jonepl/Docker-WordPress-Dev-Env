@@ -1,9 +1,10 @@
 #!bin/bash
 
 # Pulls Database Information
-WPDBUSER=$1
-WPDBNAME=$2
-WPDBPASS=$3
+SITENAME=$1
+WPDBUSER=$2
+WPDBNAME=$3
+WPDBPASS=$4
 
 # Validation
 if [ -z ${WPDBUSER} ] | [ -z ${WPDBNAME} ] | [ -z ${WPDBPASS} ]; then
@@ -13,7 +14,7 @@ fi
 
 # Create Backup Directory
 timeStamp=$(date +%Y-%m-%d_%H-%M)
-backupDir=/wp-dev/Backups/Local/
+backupDir=/wp-dev/Backups/${SITENAME}/Local/
 
 if [ -z ${WPDBNAME} ] | [ -z ${WPDBUSER} ] | [ -z ${WPDBPASS} ]; then
     echo "WordPress db name, username or password not specified. Unable to retrieve Database Information";
