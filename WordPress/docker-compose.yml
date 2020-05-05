@@ -27,7 +27,7 @@ services:
     restart: always
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: mysqlpassword
+      MYSQL_ROOT_PASSWORD: password
     networks:
       - wpsite
 

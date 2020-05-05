@@ -19,6 +19,8 @@ $ sh migration.sh -h
 7. Package wordpress. `sh migration.sh -p`
 8. Apply to remote server using you method of choice (GIT, BashScript, Manual, etc).
 
+*NOTE: You are not required to a remote WordPress environment to use this tool. Just run step #2 and #5 start developing you local WordPress site.*
+
 ## Working with Docker 
 
 ### Start Docker Wordpress container
