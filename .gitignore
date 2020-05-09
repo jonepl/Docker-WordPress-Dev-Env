@@ -3,16 +3,16 @@ src/
 db/
 
 # Ignore 
-Wordpress/dev/Scripts/Remote/Init-WP-Repo.sh
-Wordpress/dev/Scripts/Remote/post-receive
+dev/Scripts/Remote/Init-WP-Repo.sh
+dev/Scripts/Remote/post-receive
 
 # Ignore remote and local backups
-WordPress/dev/Backups/
+dev/Backups/
 
 # Ignore sensitive configuration information
 local.config
 
-Wordpress/dev/Scripts/Remote/*
-!Wordpress/dev/Scripts/Remote/TemplateScripts
+dev/Scripts/Remote/*
+!dev/Scripts/Remote/TemplateScripts
 
 Notes.txt

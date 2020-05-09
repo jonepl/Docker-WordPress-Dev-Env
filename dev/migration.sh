@@ -31,7 +31,7 @@ import_wordpress () {
     # # TODO: Error handling
     sed -i '' "s/UPDATE.*_options/UPDATE ${WPPREFIX}options/" ../db/2-migrate-to-local.sql
     sed -i '' "s/UPDATE.*_posts/UPDATE ${WPPREFIX}posts/" ../db/2-migrate-to-local.sql
-    sed -i '' "s#'https://siteurl.com'#'${SITEURL}'#" ../db/2-migrate-to-local.sql
+    sed -i '' "s#'https://siteurl.com'#'${SITEURL%/}'#" ../db/2-migrate-to-local.sql
     sed -i '' "s#WORDPRESS_TABLE_PREFIX:.*#WORDPRESS_TABLE_PREFIX: ${WPPREFIX}#" ../docker-compose.yml
 }
 
@@ -77,6 +77,10 @@ get_sitename(){
         let INDEX=${INDEX}+1
     done
 
+    if [ $INDEX == 0 ]; then
+        echo "$0: You do not have any site available. Create on using the -n flag."
+        exit 1
+    fi
     
     read choice;
 

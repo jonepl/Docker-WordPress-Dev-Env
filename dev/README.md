@@ -11,15 +11,16 @@ $ sh migration.sh -h
 ## Typical Workflow
 
 1. Create/Retrieve WordPress sitename, site url and SSH information. 
-2. Start a new site project `sh migration.sh -n`. Once created update, Update the local.config file with Scripts/Config/${SITENAME}/
-3. Upload remote scripts to remote server. `sh migration.sh -u`
-4. Import remote website into project. `sh migration.sh -i`
-5. Start `docker-compose up -d`
-6. Develop your wordpress site. Access site in your browser using localhost:8080 and PhpMyAdmin localhost:8082
-7. Package wordpress. `sh migration.sh -p`
-8. Apply to remote server using you method of choice (GIT, BashScript, Manual, etc).
+2. Start a new site project `sh migration.sh -n`. 
+3. Update the newly generate local.config file within dev/Config/${SITENAME} with your ssh host information.
+4. Upload remote scripts to remote server. `sh migration.sh -u`
+5. Import remote website into project. `sh migration.sh -i`
+6. Start `docker-compose up -d`
+7. Develop your wordpress site. Access site in your browser using localhost:8080 and PhpMyAdmin localhost:8082
+8. Package wordpress. `sh migration.sh -p`
+9. Apply to remote server using you method of choice (GIT, BashScript, Manual, etc).
 
-*NOTE: You are not required to a remote WordPress environment to use this tool. Just run step #2 and #5 start developing you local WordPress site.*
+*NOTE: You are not required to a remote WordPress environment to use this tool. Just run step #2 and #6 start developing you local WordPress site.*
 
 ## Working with Docker 
 
