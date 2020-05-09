@@ -1,4 +1,4 @@
-# Docker WordPress Dev
+# Docker WordPress Development Environment
 
 Use this Docker application to develop and maintain WordPress application between Remote and Local machines
 
