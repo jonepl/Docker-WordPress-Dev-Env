@@ -64,11 +64,34 @@ new_wp_site(){
     sh Scripts/Local/new-wp-site.sh
 }
 
+remove_wp_site(){
+
+    DEVPATH=`pwd`
+
+    CONFIGDIR="${DEVPATH}/Scripts/Config/${SITENAME}/"
+    if [ -d $CONFIGDIR ]; then
+        echo "$0: removing ${CONFIGDIR}"
+        rm -rf ${CONFIGDIR}
+    fi
+
+    SCRIPTDIR="${DEVPATH}/Scripts/Remote/${SITENAME}/"
+    if [ -d $SCRIPTDIR ]; then
+        echo "$0: removing $SCRIPTDIR"
+        rm -rf ${SCRIPTDIR}
+    fi
+
+    BACKUPDIR="${DEVPATH}/Backups/Remote/${SITENAME}/"
+    if [ -d $BACKUPDIR ]; then
+        echo "$0: removing ${BACKUPDIR}"
+        rm -rf ${BACKUPDIR}
+    fi
+}
+
 get_sitename(){
     sites=()
     INDEX=0
 
-    echo "$0: Choose an option from you available sites:"
+    echo "$0: Choose an option from your available sites:"
 
     for i in `find Scripts/Config/* -type d`
     do
@@ -125,6 +148,7 @@ This script is the entrypoint for importing and packaging your WordPress site re
 OPTIONS:
     -h      Show help message
     -n      Start a new WordPress project
+    -r      Remove an existing WordPress project
     -i      Import WordPress from server
     -p      Package WordPress used by docker Container
     -u      Upload server scripts
@@ -167,6 +191,11 @@ do
     elif [ "$arg" == "--new" ] || [ "$arg" == "-n" ]
     then
         new_wp_site
+        exit 0
+    elif [ "$arg" == "--remove" ] || [ "$arg" == "-r" ]
+    then
+        get_sitename
+        remove_wp_site
         exit 0
     elif [ "$arg" == "--help" ] || [ "$arg" == "-h" ]
     then
