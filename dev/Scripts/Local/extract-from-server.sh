@@ -11,7 +11,7 @@ if [ -z $SITENAME ] || [ -z $SSHINFO ] || [ -z $DEVROOTDIR ] || [ -z $BACKUPROOT
 fi
 
 # Backup Src and DB on Server
-echo "Executing backup server script on remote server"
+echo "$0: Executing backup server script on remote server"
 ssh -p 22 ${SSHINFO} "sh ${DEVROOTDIR}scripts/${SITENAME}/server-wp-backup.sh ${SITENAME}"
 
 if [ $? != "0" ]; then

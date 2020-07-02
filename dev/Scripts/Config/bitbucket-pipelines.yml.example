@@ -1,0 +1,8 @@
+image: atlassian/default-image:2
+
+pipelines:
+  default:
+    - step:
+        name: Deploy to Server
+        script:
+          - git push $PROD_SERVER

@@ -5,7 +5,7 @@ WPDBUSER=root
 WPDBNAME=`cat ../docker-compose.yml | grep MYSQL_DATABASE | cut -d \: -f 2 | sed -e 's/^[[:space:]]*//'`
 WPDBPASS=`cat ../docker-compose.yml | grep MYSQL_ROOT_PASSWORD | cut -d \: -f 2 | sed -e 's/^[[:space:]]*//'`
 
-if [ -z $SITENAME ] || [ -z $WPDBNAME] || [ -z $WPDBPASS]; then
+if [ -z $SITENAME ] || [ -z $WPDBNAME ] || [ -z $WPDBPASS ]; then
     echo "$0: Invalid site name, db name or db password."
     exit 1
 fi

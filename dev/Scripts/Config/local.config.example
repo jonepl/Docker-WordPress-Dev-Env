@@ -5,3 +5,4 @@ GITROOTDIR=~/var/repos/
 DEVROOTDIR=~/var/dev/
 WEBROOTDIR=~/public_html/
 BACKUPROOTDIR=~/backups/
+REMOTESYNC=DISABLED

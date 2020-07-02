@@ -11,6 +11,7 @@ dev/Backups/
 
 # Ignore sensitive configuration information
 local.config
+private.config
 
 dev/Scripts/Remote/*
 !dev/Scripts/Remote/TemplateScripts

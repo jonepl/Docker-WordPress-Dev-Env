@@ -11,22 +11,30 @@ $ sh migration.sh -h
 ## Typical Workflow
 
 1. Start a new site project `sh migration.sh -n`. 
-   - This will generate **Config**, remote **Script** and **Backup** which contains a corresponding *SITENAME* directory that holds the WordPress site information for each new WordPress site.
+   - This will generate **Config**, remote **Script** and **Backup** which contains a corresponding *SITENAME* directory that holds the WordPress site information for each new WordPress site. If synchronize site is Y, the app will automatically push remote bash scripts to your web server
+
 2. Update the newly generate local.config file within dev/Config/${SITENAME} with your ssh host information. 
 
     ``` 
     SSHINFO=123.456.78.901 
     ```
 
+   * Your app can contain a private.config file that specifies person information that can automatically populate repetitve information. Ex SSHINFO. You can manually perform the same action with step 3
+
 3. Upload remote scripts to remote server using `sh migration.sh -u`. 
    - This will generate remote scripts within dev/Remote/${SITENAME} and upload them to you remote server
 4. Import existing remote website into project. `sh migration.sh -i`
+   * This step is recommended if you are planning to push your local WordPress environment up to a remote web server. There are a few differences between a web host's installation of WordPress and a Docker WordPress image that will make the migration process more difficult if you attempt to export WordPress for the Docker image.
 5. Start `docker-compose up -d`
 6. Develop your wordpress site. Access site in your browser using localhost:8080 and PhpMyAdmin localhost:8082
-7. Package wordpress. `sh migration.sh -p`
-8. Apply to remote server using you method of choice (GIT, BashScript, Manual, etc).
+7. Package wordpress. `sh migration.sh -p`. 
+   * This step will gzip all source code and creaet a sql backup and store it with `dev/Backups/${SITENAME}/Local` and initialize empty repository there and . 
+8. Set up SSH from your GIT repo to your Web Host and the PROD_SERVER repository variable and push your changes. GIT will maintain all previous versions of WordPress. ENSURE YOUR REPOSITORY IS PRIVATE FOR PRODUCTION USE. 
 
 *NOTE: You are not required to a remote WordPress environment to use this tool. Just run step #2 and #6 start developing you local WordPress site.*
+
+
+*NOTE: *
 
 ## Working with Docker 
 

@@ -2,6 +2,7 @@
 
 SITENAME=null
 
+# FUTURE UPDATE: Set SITENAME from imported data instead of running new command
 import_wordpress () {
     echo "$0: Importing Wordpress site from Server..."
 
@@ -39,14 +40,17 @@ package_wordpress () {
 
     WPDBNAME=`cat Scripts/Config/${SITENAME}/local.config | grep DBNAME | cut -d \= -f 2`
     WPDBPASS=`cat Scripts/Config/${SITENAME}/local.config | grep DBPASS | cut -d \= -f 2`
+    REMOTESYNC=`cat Scripts/Config/${SITENAME}/local.config | grep REMOTESYNC | cut -d \= -f 2`
     
     echo "$0: Packaging Wordpress site for Server"
-    sh Scripts/Local/package-wordpress.sh $SITENAME $WPDBNAME $WPDBPASS
+    sh Scripts/Local/package-wordpress.sh $SITENAME
 
     if [ $? != "0" ]; then
         echo "$0: Unable to package wordpress site"
         exit 1
     fi
+
+    sh Scripts/Local/prep-repos.sh $SITENAME
 }
 
 update_config(){
@@ -62,9 +66,24 @@ validate_server_dir(){
 new_wp_site(){
     echo "$0: Creating new Wordpress site..."
     sh Scripts/Local/new-wp-site.sh
+
+    if [ $? == "0" ]; then
+        SITEPATH=`ls -td Backups/*/ | head -1`
+        SITENAME=`basename $SITEPATH`
+        REMOTESYNC=`cat Scripts/Config/${SITENAME}/local.config | grep REMOTESYNC | cut -d \= -f 2`
+
+        if [ $REMOTESYNC == "enabled" ] || [ $REMOTESYNC == "ENABLED" ]; then
+            echo "$0: Uploading scripts to remote server..."
+            sh Scripts/Local/upload-server-scripts.sh $SITENAME
+        fi
+    fi
+
 }
 
 remove_wp_site(){
+
+    echo "$0: Cleaning up Wordpress site ${SITENAME}..."
+    sh Scripts/Local/remove-wp-site.sh ${SITENAME}
 
     DEVPATH=`pwd`
 
@@ -80,7 +99,7 @@ remove_wp_site(){
         rm -rf ${SCRIPTDIR}
     fi
 
-    BACKUPDIR="${DEVPATH}/Backups/Remote/${SITENAME}/"
+    BACKUPDIR="${DEVPATH}/Backups/${SITENAME}/"
     if [ -d $BACKUPDIR ]; then
         echo "$0: removing ${BACKUPDIR}"
         rm -rf ${BACKUPDIR}
@@ -134,6 +153,26 @@ get_sitename(){
     fi
 }
 
+list_sitename(){
+
+    sites=()
+    INDEX=0
+    
+    echo "$0: Here is a list of site you have"
+
+    for i in `find Scripts/Config/* -type d`
+    do
+        echo ${INDEX}. $(basename $i)
+        sites+=($i)
+        let INDEX=${INDEX}+1
+    done
+
+    if [ $INDEX == 0 ]; then
+        echo "$0: You do not have any site available. Create on using the -n flag."
+        exit 1
+    fi
+}
+
 upload_server_scripts(){
     echo "$0: Updating server scripts"
     sh Scripts/Local/upload-server-scripts.sh $SITENAME
@@ -152,6 +191,7 @@ OPTIONS:
     -i      Import WordPress from server
     -p      Package WordPress used by docker Container
     -u      Upload server scripts
+    -l      List all WordPress site names
 EOF
 }
 
@@ -195,7 +235,11 @@ do
     elif [ "$arg" == "--remove" ] || [ "$arg" == "-r" ]
     then
         get_sitename
-        remove_wp_site
+        remove_wp_site        
+        exit 0
+    elif [ "$arg" == "--list" ] || [ "$arg" == "-l" ]
+    then
+        list_sitename
         exit 0
     elif [ "$arg" == "--help" ] || [ "$arg" == "-h" ]
     then

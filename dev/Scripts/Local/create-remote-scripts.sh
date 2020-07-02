@@ -34,6 +34,12 @@ sed -i '' "s#DEVROOTDIR=.*#DEVROOTDIR=$DEVROOTDIR#" Scripts/Remote/${SITENAME}/s
 sed -i '' "s#WEBROOTDIR=.*#WEBROOTDIR=$WEBDIR#" Scripts/Remote/${SITENAME}/server-init-repo.sh.example
 mv Scripts/Remote/${SITENAME}/server-init-repo.sh.example Scripts/Remote/${SITENAME}/server-init-repo.sh
 
+# Generate server-clean-repo.sh
+sed -i '' "s#SITENAME=.*#SITENAME=$SITENAME#" Scripts/Remote/${SITENAME}/server-clean-repo.sh.example
+sed -i '' "s#GITROOTDIR=.*#GITROOTDIR=$GITROOTDIR#" Scripts/Remote/${SITENAME}/server-clean-repo.sh.example
+sed -i '' "s#DEVROOTDIR=.*#DEVROOTDIR=$DEVROOTDIR#" Scripts/Remote/${SITENAME}/server-clean-repo.sh.example
+mv Scripts/Remote/${SITENAME}/server-clean-repo.sh.example Scripts/Remote/${SITENAME}/server-clean-repo.sh
+
 # Generate post-receive
 sed -i '' "s#SITENAME=.*#SITENAME=$SITENAME#" Scripts/Remote/${SITENAME}/post-receive.example
 sed -i '' "s#GITROOTDIR=.*#GITROOTDIR=$GITROOTDIR#" Scripts/Remote/${SITENAME}/post-receive.example

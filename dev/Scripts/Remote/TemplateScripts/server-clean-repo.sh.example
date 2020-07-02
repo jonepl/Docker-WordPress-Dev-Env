@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SITENAME=1
+GITROOTDIR=2
+DEVROOTDIR=3
+
+REPODIR=${GITROOTDIR}${SITENAME}/
+SCRIPTSDIR=${DEVROOTDIR}scripts/${SITENAME}/
+
+# Delete uploaded scripts if exist
+if [ -d $REPODIR ]; then
+    echo "$0: Removing Repository directory for ${SITENAME}..."
+    rm -rf $REPODIR
+fi
+
+if [ -d $SCRIPTSDIR ]; then
+    echo "$0: Removing Scripts directory for ${SITENAME}..."
+    rm -rf $SCRIPTSDIR
+fi
